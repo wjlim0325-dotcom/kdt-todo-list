@@ -1,26 +1,71 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * 디자인 시스템 토큰 (Figma "컬러" 섹션 + 화면에서 사용되는 보조 색상)
+ * Tailwind v4 의 @theme 에 등록하면 bg-slate-900, text-violet-600 등 유틸리티로 바로 사용할 수 있다.
+ */
+@theme {
+  /* 컬러 시스템 */
+  --color-slate-900: #0f172a;
+  --color-slate-800: #1e293b;
+  --color-slate-500: #64748b;
+  --color-slate-400: #94a3b8;
+  --color-slate-300: #cbd5e1;
+  --color-slate-200: #e2e8f0;
+  --color-slate-100: #f1f5f9;
+  --color-violet-600: #7c3aed;
+  --color-violet-100: #ede9fe;
+  --color-amber-800: #92400e;
+  --color-rose-500: #f43f5e;
+  --color-lime-300: #bef264;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* 화면에서 사용되는 보조 색상 */
+  --color-gray-50: #f9fafb;
+  --color-slate-50: #f8fafc;
+  --color-violet-200: #ddd6fe;
+  --color-yellow-50: #fefce8;
+  --color-amber-100: #fef3c7;
+  --color-amber-200: #fde68a;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* 폰트 */
+  --font-sans: "NanumSquare", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+
+  /* 반응형 breakpoint: 모바일 < 744 ≤ 태블릿 < 1200 ≤ 데스크탑 */
+  --breakpoint-md: 744px;
+  --breakpoint-lg: 1200px;
+
+  /* 버튼/입력창 아래에 깔리는 오프셋 그림자 */
+  --shadow-offset: 4px 3.5px 0 0 #0f172a;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-gray-50);
+  color: var(--color-slate-900);
+  font-family: var(--font-sans);
+}
+
+/* 메모 영역 스크롤바 */
+.memo-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.memo-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-amber-200);
+  border-radius: 3px;
+}
+.memo-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-amber-200) transparent;
+}
+
+/* 메모 배경의 줄노트 패턴 (32px 간격) */
+.memo-lines {
+  background-color: var(--color-yellow-50);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 30px,
+    var(--color-amber-100) 30px,
+    var(--color-amber-100) 32px
+  );
+  background-position: 0 22px;
 }

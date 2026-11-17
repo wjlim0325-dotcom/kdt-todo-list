@@ -1,103 +1,42 @@
-import Image from "next/image";
+// 'use client': 이 파일은 브라우저에서 실행된다는 표시. 클릭·입력·서버 데이터 요청(훅)을 쓰려면 필요하다.
+'use client';
 
-export default function Home() {
+import TodoForm from '@/components/list/TodoForm';
+import TodoSection from '@/components/list/TodoSection';
+import { useTodosQuery } from '@/hooks/useTodos';
+
+/**
+ * 할 일 목록 페이지 ("/").
+ * 상단 입력 폼 + 진행 중(TO DO) / 완료(DONE) 두 섹션.
+ * 데스크탑(≥1200px)에서는 두 섹션이 가로 2열, 그 이하에서는 세로로 쌓인다.
+ */
+export default function HomePage() {
+  // 서버에서 목록을 가져온다. 데이터가 오기 전에는 isLoading 이 true, 실패하면 isError 가 true.
+  // `data: todos = []` 는 "data 를 todos 라는 이름으로 꺼내고, 아직 없으면 빈 배열을 쓴다"는 뜻.
+  const { data: todos = [], isLoading, isError, refetch } = useTodosQuery();
+
+  const inProgress = todos.filter((todo) => !todo.isCompleted);
+  const completed = todos.filter((todo) => todo.isCompleted);
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="mx-auto max-w-[1200px] px-4 pt-4 pb-12 md:px-6 md:pt-6 lg:px-0">
+      <TodoForm />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {isLoading ? (
+        <p className="mt-10 text-center text-slate-400">불러오는 중...</p>
+      ) : isError ? (
+        <div className="mt-10 flex flex-col items-center gap-2 text-slate-500">
+          <p>할 일 목록을 불러오지 못했어요.</p>
+          <button type="button" onClick={() => refetch()} className="cursor-pointer underline">
+            다시 시도
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      ) : (
+        <div className="mt-6 flex flex-col gap-12 md:mt-10 lg:flex-row lg:gap-6">
+          <TodoSection type="todo" todos={inProgress} />
+          <TodoSection type="done" todos={completed} />
+        </div>
+      )}
+    </main>
   );
 }
