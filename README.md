@@ -8,6 +8,8 @@
 
 > 📖 **Next.js / TypeScript 가 처음이라면** → [코드 읽기 가이드 (docs/GUIDE.md)](docs/GUIDE.md) 를 먼저 읽어주세요.
 > 파일 연결 다이어그램, 핵심 개념 10개, 기능별 코드 흐름을 그림과 함께 설명합니다.
+>
+> 🚀 **GitHub 업로드 / Vercel 배포 방법** → [배포 가이드 (docs/DEPLOY.md)](docs/DEPLOY.md)
 
 ## 기술 스택
 
