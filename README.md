@@ -3,7 +3,7 @@
 할 일 목록을 관리하는 To Do 서비스입니다.
 할 일을 추가하고, 진행 중 / 완료 상태를 나누어 보고, 상세 페이지에서 이름·상태·메모·이미지를 수정하거나 삭제할 수 있습니다.
 
-- 배포 링크: _(배포 후 추가)_
+- 배포 링크: https://kdt-todo-list.vercel.app
 - API: https://assignment-todolist-api.vercel.app/docs/
 
 > 📖 **Next.js / TypeScript 가 처음이라면** → [코드 읽기 가이드 (docs/GUIDE.md)](docs/GUIDE.md) 를 먼저 읽어주세요.
